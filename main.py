@@ -1,10 +1,5 @@
 # main.py
-# NOTES:
-#    ISSUES WITH:
-#        1.
-#        line 91, in solving_using_factoring
-#        print('\n(x + ',rs[0],')','(x + ',rs[1],')\n')
-#        IndexError: index 0 is out of bounds for axis 0 with size 0
+
 
 # =======================================
 # Importing  files.py 
@@ -17,21 +12,19 @@ import numpy as np
 
 # ============ control center ============
 
-a = 'vertix_to_standard'
-b = 'standard_to_vertix'
-c = 'using_quadratic'
-d = 'using_roots_r1r2'
-e = 'standard_r1r2_graph'
-f = 'standard_quadratic_graph'
-g = 'vertix_quadratic_graph'
-n = e 
+a = 'standard_to_vertix_roots_n_graph' # from standard form to vertix - prints the exact roots and a graph
+b = 'vertix_to_standard_n_graph'       # from vertix form to standard - prints a graph
+c = 'roots_using_quadratic'            # prints the exact roots of the quadratic equation starting from standard form, using quadratic formula
+d = 'roots_using_factoring'            # prints the whole roots of the quadratic equation if any starting from standard form, using factoring
+
+n = d
 # ============ Variables ==================
-a = 4
-b = -8
-c = 5
-h = 1
-k = 1
-x =  np.arange(-5,5,1)
+a = 1
+b = 4
+c = -12
+h = 3
+k = -1
+x =  np.arange(-5,6,1)  # x is a range of values  => y = a range of values 
 # ==========================================
 
 # Python Switch Case Statement using Class
@@ -43,92 +36,64 @@ class StepModuleExecSwitch:
         #getattr(obj, key, def)
         return getattr(self, n, lambda: default)()
 
-    def standard_to_vertix(self):
+    #  vertx form  y = a*(x - h)**2 + k =>  standard form y= a*x**2 + b*x + c 
+    def standard_to_vertix_roots_n_graph(self):
 
         y = np.array([])
         for x_ in x: 
+            # solving quadratic  standard form y= a*x**2 + b*x + c =>  vertx form  y = a*(x - h)**2 + k 
+            # values a, b, c, x are used
             Vertex_obj =  FormChanger(a, b, c, h, k, x_)
-            y= np.append(y,Vertex_obj.from_standard_to_vertex())
-        print('this is a x array: ',x)
-        print('this is a y array: ',y)
+            y = np.append(y,Vertex_obj.from_standard_to_vertex())
+            
+        print(f'\nthis is a x array: {x}')
+        print(f'this is a y array: {y}\n')
+        
+        # find roots  using quadratic formula
+        Quadratic_obj =  SolvingQuadratics(a, b, c)
+        Quadratic_obj.solving_using_quadratic()
+        
+        # plots the the quadratic
+        Display_obj =  Display(x, y)
+        Display_obj.multiple_line_plots()
 
         return
 
-    def vertix_to_standard(self):
+    #  standard form y= a*x**2 + b*x + c  => vertx form  y = a*(x - h)**2 + k 
+    def vertix_to_standard_n_graph(self):
 
         y = np.array([])
         for x_ in x: 
+            # solving quadratic  vertx form  y = a*(x - h)**2 + k =>  standard form y= a*x**2 + b*x + c 
+            # values a, x, h, k are used
             Standard_obj =  FormChanger(a, b, c, h, k, x_)
             y= np.append(y,Standard_obj.from_vertex_to_standard())
-        print('this is a x array: ',x)
-        print('this is a y array: ',y)
+            
+        print(f'\nthis is a x array: {x}')
+        print(f'this is a y array: {y}\n')
+        
+        # plots the the quadratic
+        Display_obj =  Display(x, y)
+        Display_obj.multiple_line_plots()
 
         return
 
-    def using_quadratic(self):
+    def roots_using_quadratic(self):
 
+        # find roots  using quadratic formula
         Quadratic_obj =  SolvingQuadratics(a, b, c)
         Quadratic_obj.solving_using_quadratic()
 
         return
 
-    def using_roots_r1r2(self):
+    def roots_using_factoring(self):
 
+        # find roots using factoring 
         Factored_obj =  SolvingQuadratics(a, b, c)
         Factored_obj.solving_using_factoring()
 
         return
     
-    def standard_r1r2_graph(self):
-
-        y = np.array([])
-        for x_ in x: 
-            Standard_obj =  FormChanger(a, b, c, h, k, x_)
-            y= np.append(y,Standard_obj.from_vertex_to_standard())
-        print('this is a x array: ',x)
-        print('this is a y array: ',y)
-
-        Factored_obj =  SolvingQuadratics(a, b, c)
-        Factored_obj.solving_using_factoring()
-
-        Display_obj =  Display(x, y)
-        Display_obj.multiple_line_plots()
-
-        return
-
-    def standard_quadratic_graph(self):
-
-        y = np.array([])
-        for x_ in x: 
-            Standard_obj =  FormChanger(a, b, c, h, k, x_)
-            y= np.append(y,Standard_obj.from_vertex_to_standard())
-        print('this is a x array: ',x)
-        print('this is a y array: ',y)
-
-        Quadratic_obj =  SolvingQuadratics(a, b, c)
-        roots = Quadratic_obj.solving_using_quadratic()
-
-        Display_obj =  Display(x, y)
-        Display_obj.multiple_line_plots()
-
-        return
-
-    def vertix_quadratic_graph(self):
-
-        y = np.array([])
-        for x_ in x: 
-            Vertex_obj =  FormChanger(a, b, c, h, k, x_)
-            y= np.append(y,Vertex_obj.from_standard_to_vertex())
-        print('this is a x array: ',x)
-        print('this is a y array: ',y)
-
-        Quadratic_obj =  SolvingQuadratics(a, b, c)
-        roots = Quadratic_obj.solving_using_quadratic()
-
-        Display_obj =  Display(x, y)
-        Display_obj.multiple_line_plots()
-
-        return
 
 obj = StepModuleExecSwitch()
 obj.switch(n)
